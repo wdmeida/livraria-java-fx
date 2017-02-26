@@ -38,21 +38,10 @@ public class Main extends Application {
 		//Define a tabela, e as colunas que devem ser preenchidas na mesma.
 		TableView tableView = new TableView(produtos);
 		
-		TableColumn nomeColumn = new TableColumn("Nome");
-		nomeColumn.setMinWidth(180);
-		nomeColumn.setCellValueFactory(new PropertyValueFactory("nome"));
-		
-		TableColumn descColumn = new TableColumn("Descrição");
-		descColumn.setMinWidth(230);
-		descColumn.setCellValueFactory(new PropertyValueFactory("descricao"));
-		
-		TableColumn valorColumn = new TableColumn("Valor");
-		valorColumn.setMinWidth(60);
-		valorColumn.setCellValueFactory(new PropertyValueFactory("valor"));
-		
-		TableColumn isbnColumn = new TableColumn("ISBN");
-		isbnColumn.setMinWidth(180);
-		isbnColumn.setCellValueFactory(new PropertyValueFactory("isbn"));
+		TableColumn nomeColumn = criaColuna("Nome", 180, "nome");
+		TableColumn descColumn = criaColuna("Descrição", 230, "descricao");
+		TableColumn valorColumn = criaColuna("Valor", 60, "valor");
+		TableColumn isbnColumn = criaColuna("ISBN", 180, "isbn");
 		
 		//Adiciona as colunas a tabela.
 		tableView.getColumns().addAll(nomeColumn, descColumn, valorColumn, isbnColumn);
@@ -129,6 +118,15 @@ public class Main extends Application {
 			System.out.println("Erro ao exportar: " + e);
 		}
 	}//exportarEmCSV()
+	
+	private TableColumn<Produto, String> criaColuna(String titulo, int largura, String atributo) {
+		
+		TableColumn<Produto, String> column = new TableColumn<Produto, String>(titulo);
+		column.setMinWidth(largura);
+		column.setCellValueFactory(new PropertyValueFactory<Produto, String>(atributo));
+		
+		return column;
+	}//criaColuna()
 	
 	public static void main(String[] args) {
 		launch(args);
