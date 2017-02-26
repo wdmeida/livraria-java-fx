@@ -68,21 +68,32 @@ public class Main extends Application {
 		button.setLayoutX(575);
 		button.setLayoutY(25);
 		
-		//Define a ação que será executada ao clicar no botão.
-		button.setOnAction(event -> exportarEmCSV(produtos));
+		//Define a ação que será executada ao clicar no botão. Utiliza
+		//Thread para fazer a que a exportação demore 20 segundos e 
+		//exemplificar o uso de threads.
+		button.setOnAction(event -> {		
+			new Thread(() -> {
+				dormePorVinteSegundos();
+				exportarEmCSV(produtos);
+			}).start();
+		});
 		
 		//Adiciona os componentes criados ao cenário.
 		group.getChildren().addAll(label, vBox, button);
-		primaryStage.setScene(scene);
 		
 		//Define o título e exibe o cenário.
 		primaryStage.setTitle("Sistema da livraria com Java FX");
+		primaryStage.setScene(scene);
 		primaryStage.show();
-	}
+	}//start()
 	
-	public static void main(String[] args) {
-		launch(args);
-	}
+	private void dormePorVinteSegundos() {
+		try {
+			Thread.sleep(20000);
+		} catch (InterruptedException e) {
+			System.out.println("Ops, ocorreu um erro: " + e);
+		}
+	}//dormePorVinteSegundos()
 	
 	private void exportarEmCSV(ObservableList<Produto> produtos){
 		try {
@@ -90,5 +101,9 @@ public class Main extends Application {
 		} catch (IOException e) {
 			System.out.println("Erro ao exportar: " + e);
 		}
-	}
+	}//exportarEmCSV()
+	
+	public static void main(String[] args) {
+		launch(args);
+	}//main()
 }

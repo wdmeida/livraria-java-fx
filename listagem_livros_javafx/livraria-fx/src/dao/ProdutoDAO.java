@@ -56,6 +56,5 @@ public class ProdutoDAO {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-	
-	}
+	}//adiciona()
 }
