@@ -1,11 +1,14 @@
 package application;
 	
+import java.io.IOException;
+
 import br.com.casadocodigo.livraria.produtos.Produto;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -14,10 +17,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.Stage;
+import repositorio.Exportador;
 import repositorio.RepositorioDeProdutos;
 
-
 public class Main extends Application {
+	
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
 	public void start(Stage primaryStage) {
@@ -59,8 +63,16 @@ public class Main extends Application {
 		label.setFont(Font.font("Lucida Grande", FontPosture.REGULAR, 30));
 		label.setPadding(new Insets(20, 0, 10, 10));
 		
+		//Cria o button Exportar CSV e define sua propriedades.
+		Button button = new Button("Exportar CSV");
+		button.setLayoutX(575);
+		button.setLayoutY(25);
+		
+		//Define a ação que será executada ao clicar no botão.
+		button.setOnAction(event -> exportarEmCSV(produtos));
+		
 		//Adiciona os componentes criados ao cenário.
-		group.getChildren().addAll(label, vBox);
+		group.getChildren().addAll(label, vBox, button);
 		primaryStage.setScene(scene);
 		
 		//Define o título e exibe o cenário.
@@ -70,5 +82,13 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
+	}
+	
+	private void exportarEmCSV(ObservableList<Produto> produtos){
+		try {
+			new Exportador().paraCSV(produtos);
+		} catch (IOException e) {
+			System.out.println("Erro ao exportar: " + e);
+		}
 	}
 }
