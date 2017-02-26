@@ -12,9 +12,20 @@ import br.com.casadocodigo.livraria.produtos.LivroFisico;
 import br.com.casadocodigo.livraria.produtos.Produto;
 import db.ConnectionFactory;
 import javafx.collections.ObservableList;
-
+/**
+ * Cuida do acesso aos dados da classe {@link Produto}.
+ * 
+ * @author Wagner Almeida
+ * @since 1.0
+ */
 public class ProdutoDAO {
 	
+	/**
+	 * Lista todos os produtos do banco de dados.
+	 * 
+	 * @return {@link ObservableList} com todos os produtos.
+	 * @throws RuntimeException em caso de erros.
+	 */
 	public ObservableList<Produto> lista() {
 		
 		ObservableList<Produto> produtos = observableArrayList();
@@ -41,6 +52,11 @@ public class ProdutoDAO {
 		return produtos;
 	}//ObservaleList()
 	
+	/**
+	 * Adiciona um novo {@link Produto} ao banco de dados.
+	 * @param produto que deverá ser adicionado no banco.
+	 * @throws RuntimeException em caso de erros.
+	 */
 	public void adiciona(Produto produto) {
 		PreparedStatement ps;
 		
