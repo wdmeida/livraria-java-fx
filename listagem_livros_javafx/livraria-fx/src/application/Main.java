@@ -7,6 +7,7 @@ import dao.ProdutoDAO;
 import io.Exportador;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -58,28 +59,45 @@ public class Main extends Application {
 		final VBox vBox = new VBox(tableView);
 		vBox.setPadding(new Insets(70, 0, 0, 10));
 		
-		//Cria um label e define suas propriedades.
+		//Cria um label para o título e define suas propriedades.
 		Label label = new Label("Listagem de Livros");
 		label.setFont(Font.font("Lucida Grande", FontPosture.REGULAR, 30));
 		label.setPadding(new Insets(20, 0, 10, 10));
+		
+		//Cria um label para mostrar o progresso de exportação.
+		Label progresso = new Label();
+		progresso.setLayoutX(485);
+		progresso.setLayoutY(30);
 		
 		//Cria o button Exportar CSV e define sua propriedades.
 		Button button = new Button("Exportar CSV");
 		button.setLayoutX(575);
 		button.setLayoutY(25);
 		
-		//Define a ação que será executada ao clicar no botão. Utiliza
-		//Thread para fazer a que a exportação demore 20 segundos e 
-		//exemplificar o uso de threads.
+		//Define a ação que será executada ao clicar no botão.
 		button.setOnAction(event -> {		
-			new Thread(() -> {
-				dormePorVinteSegundos();
-				exportarEmCSV(produtos);
-			}).start();
+			
+			//Utiliza uma API do Java FX para executar código assíncrono.
+			Task<Void> task = new Task<Void>() {
+
+				@Override
+				protected Void call() throws Exception {
+					dormePorVinteSegundos();
+					exportarEmCSV(produtos);
+					return null;
+				}
+			};
+			
+			//Executa uma ação assim que a task assincrona começa a ser executada.
+			task.setOnRunning(e -> progresso.setText("Exportando..."));
+			//Executa uma ação assim que a task for concluída.
+			task.setOnSucceeded(e -> progresso.setText("Concluído!"));
+			
+			new Thread(task).start();
 		});
 		
-		//Adiciona os componentes criados ao cenário.
-		group.getChildren().addAll(label, vBox, button);
+		//Adiciona os componentes criados ao grupo de elementos do cenário.
+		group.getChildren().addAll(label, vBox, button, progresso);
 		
 		//Define o título e exibe o cenário.
 		primaryStage.setTitle("Sistema da livraria com Java FX");
