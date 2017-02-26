@@ -8,7 +8,6 @@ import io.Exportador;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,8 +16,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -29,6 +26,11 @@ public class Main extends Application {
 		
 		Group group = new Group();
 		Scene scene = new Scene(group, 690, 510);
+		
+		//Adiciona o arquivo que contém o css responsável por estilizar os componentes.
+		scene.getStylesheets().add(getClass()
+				.getResource("application.css").toExternalForm());
+		
 		
 		//Define a fonte dos dados que preencherão a tabela.
 		ObservableList<Produto> produtos = new ProdutoDAO().lista();
@@ -57,22 +59,29 @@ public class Main extends Application {
 		
 		//Cria um componente vBox para envolver a tabela e assim acertar o espaçamento.
 		final VBox vBox = new VBox(tableView);
-		vBox.setPadding(new Insets(70, 0, 0, 10));
+		vBox.setId("vbox");
 		
 		//Cria um label para o título e define suas propriedades.
 		Label label = new Label("Listagem de Livros");
-		label.setFont(Font.font("Lucida Grande", FontPosture.REGULAR, 30));
-		label.setPadding(new Insets(20, 0, 10, 10));
+		//Define um identificador único ao elemento.
+		label.setId("label-listagem");
 		
 		//Cria um label para mostrar o progresso de exportação.
 		Label progresso = new Label();
-		progresso.setLayoutX(485);
-		progresso.setLayoutY(30);
+		progresso.setId("label-progresso");
+		
+		//Calcula o valor total dos produtos no estoque.
+		double valorTotal = produtos.stream()
+				.mapToDouble(Produto::getValor).sum();
+		
+		//Cria um label para exibir informações do estoque.
+		Label labelFooter = new Label(
+				String.format("Você tem R$ %.2f em estoque, "
+						+ "com um total de %d produtos.", valorTotal, produtos.size()));
+		labelFooter.setId("label-footer");
 		
 		//Cria o button Exportar CSV e define sua propriedades.
 		Button button = new Button("Exportar CSV");
-		button.setLayoutX(575);
-		button.setLayoutY(25);
 		
 		//Define a ação que será executada ao clicar no botão.
 		button.setOnAction(event -> {		
@@ -97,7 +106,7 @@ public class Main extends Application {
 		});
 		
 		//Adiciona os componentes criados ao grupo de elementos do cenário.
-		group.getChildren().addAll(label, vBox, button, progresso);
+		group.getChildren().addAll(label, vBox, button, progresso, labelFooter);
 		
 		//Define o título e exibe o cenário.
 		primaryStage.setTitle("Sistema da livraria com Java FX");
