@@ -1,4 +1,4 @@
-package repositorio;
+package io;
 
 import java.io.IOException;
 import java.io.PrintStream;

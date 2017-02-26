@@ -3,6 +3,8 @@ package application;
 import java.io.IOException;
 
 import br.com.casadocodigo.livraria.produtos.Produto;
+import dao.ProdutoDAO;
+import io.Exportador;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -17,8 +19,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.Stage;
-import repositorio.Exportador;
-import repositorio.RepositorioDeProdutos;
 
 public class Main extends Application {
 	
@@ -30,7 +30,7 @@ public class Main extends Application {
 		Scene scene = new Scene(group, 690, 510);
 		
 		//Define a fonte dos dados que preencherão a tabela.
-		ObservableList<Produto> produtos = new RepositorioDeProdutos().lista();
+		ObservableList<Produto> produtos = new ProdutoDAO().lista();
 		
 		//Define a tabela, e as colunas que devem ser preenchidas na mesma.
 		TableView tableView = new TableView(produtos);
