@@ -3,7 +3,7 @@
 Projeto desenvolvido durante os estudos do livro <strong>Explorando APIs e bibliotecas Java</strong>, da Casa do Código. O projeto utiliza as seguintes tecnologias:
 
 <ul>
-    <li><strong>Maven</strong></li>
+    <li><strong>Apache Maven</strong></li>
     <li><strong>JavaFX</strong></li>
     <li><strong>MySQL</strong></li>
 </ul>
